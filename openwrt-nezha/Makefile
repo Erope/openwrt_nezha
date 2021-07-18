@@ -62,7 +62,7 @@ PKG_HASH:=skip
 
 define Build/Prepare
 	mkdir -vp $(TAR_DIR)
-	tar -zxvf $(DL_DIR)/$(PKG_SOURCE) -C $(UNZIP_DIR)
+	tar -zxvf $(DL_DIR)/$(PKG_SOURCE) -C $(TAR_DIR)
 endef
 
 define Build/Configure
