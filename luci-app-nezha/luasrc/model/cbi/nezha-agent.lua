@@ -1,5 +1,6 @@
 --[[
 
+Copyright (C) 2021 zPonds <admin@shinenet.cn>
 Copyright (C) 2020 KFERMercer <KFER.Mercer@gmail.com>
 Copyright (C) 2020 [CTCGFW] Project OpenWRT
 
@@ -21,7 +22,7 @@ enable = s:option(Flag, "enabled", translate("启用"))
 enable.rmempty = false
 
 o = s:option(Value, "host", translate("面板RPC Host:Port"))
-o.datatype = "host"
+o.datatype = "hostport"
 o.placeholder = "localhost:5555"
 o.default = "localhost:5555"
 o.rmempty = false
