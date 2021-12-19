@@ -21,8 +21,8 @@ on:
         default: 'false'
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
-  REPO_BRANCH: master
+  REPO_URL: https://git.openwrt.org/openwrt/openwrt.git
+  REPO_CHECKOUT: v17.01.6
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: ./github/.config
   DIY_P1_SH: diy-part1.sh
@@ -59,8 +59,12 @@ jobs:
       working-directory: /workdir
       run: |
         df -hT $PWD
-        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        git clone $REPO_URL openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        cd openwrt
+        git checkout $REPO_CHECKOUT
+        make distclean
+        echo 'src-git nezha https://github.com/Erope/openwrt_nezha' >> feeds.conf.default
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
@@ -71,7 +75,6 @@ jobs:
     - name: Load custom configuration
       run: |
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        echo 'src-git nezha https://github.com/Erope/openwrt_nezha' >> openwrt/feeds.conf.default
     
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
@@ -85,6 +88,7 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
+        make toolchain/install
         make package/luci-app-nezha/compile V=99
         make package/openwrt-nezha/compile V=99
         echo "::set-output name=status::success"
