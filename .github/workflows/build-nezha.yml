@@ -74,7 +74,7 @@ jobs:
 
     - name: Load custom configuration
       run: |
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        echo 'pass'
     
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
