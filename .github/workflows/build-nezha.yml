@@ -25,13 +25,8 @@ env:
   REPO_CHECKOUT: v17.01.6
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: ./.github/.config
-  DIY_P1_SH: diy-part1.sh
-  DIY_P2_SH: diy-part2.sh
-  UPLOAD_BIN_DIR: false
-  UPLOAD_FIRMWARE: true
-  UPLOAD_COWTRANSFER: false
-  UPLOAD_WETRANSFER: false
-  UPLOAD_RELEASE: false
+  UPLOAD_BIN_DIR: true
+  UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -93,9 +88,9 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make -j4 toolchain/install
-        make package/luci-app-nezha/compile V=99
-        make package/openwrt-nezha/compile V=99
+        make -j2 toolchain/install
+        make -j2 package/luci-app-nezha/compile V=99
+        make -j2 package/openwrt-nezha/compile V=99
         echo "::set-output name=status::success"
         echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
 
