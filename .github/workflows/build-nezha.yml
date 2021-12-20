@@ -61,6 +61,12 @@ jobs:
         make distclean
         echo 'src-git nezha https://github.com/Erope/openwrt_nezha' >> feeds.conf.default
 
+    - name: Cache
+      uses: klever1988/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        prefix: ${{ github.workspace }}/openwrt
+
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
 
@@ -83,7 +89,7 @@ jobs:
         cd openwrt
         make -j16 download V=s
 
-    - name: Compile the firmware
+    - name: Compile the BIN
       id: compile
       run: |
         cd openwrt
@@ -109,7 +115,7 @@ jobs:
         touch release.txt
         echo "::set-output name=status::success"
 
-    - name: Upload firmware to release
+    - name: Upload BIN to release
       uses: softprops/action-gh-release@v1
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
@@ -117,4 +123,4 @@ jobs:
       with:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
-        files: openwrt/bin
+        files: openwrt/bin/packages/x86_64/nezha
