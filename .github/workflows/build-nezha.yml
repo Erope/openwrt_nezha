@@ -24,7 +24,7 @@ env:
   REPO_URL: https://git.openwrt.org/openwrt/openwrt.git
   REPO_CHECKOUT: v17.01.6
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: ./github/.config
+  CONFIG_FILE: ./.github/.config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
@@ -74,7 +74,7 @@ jobs:
 
     - name: Load custom configuration
       run: |
-        echo 'pass'
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
     
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
@@ -83,12 +83,17 @@ jobs:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
+    - name: Download
+      run: |
+        cd openwrt
+        make -j16 download V=s
+
     - name: Compile the firmware
       id: compile
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make toolchain/install
+        make -j4 toolchain/install
         make package/luci-app-nezha/compile V=99
         make package/openwrt-nezha/compile V=99
         echo "::set-output name=status::success"
