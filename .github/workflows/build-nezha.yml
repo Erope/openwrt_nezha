@@ -98,8 +98,10 @@ jobs:
         make -j2 package/luci-app-nezha/compile V=99
         make -j2 package/openwrt-nezha/compile V=99
         mv -f $GITHUB_WORKSPACE/.github/.config_x86 .config
+        rm -rf ./tmp
         make -j2 package/openwrt-nezha/compile V=99
         mv -f $GITHUB_WORKSPACE/.github/.config_arm64 .config
+        rm -rf ./tmp
         make -j2 package/openwrt-nezha/compile V=99
         echo "::set-output name=status::success"
 
