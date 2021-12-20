@@ -111,7 +111,8 @@ jobs:
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
-        echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
+        version=$(curl -m 10 -sL "https://api.github.com/repos/naiba/nezha/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
+        echo "::set-output name=release_tag::$(version)"
         touch release.txt
         echo "::set-output name=status::success"
 
@@ -123,4 +124,4 @@ jobs:
       with:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
-        files: openwrt/bin/packages/x86_64/nezha
+        files: openwrt/bin/packages/x86_64/nezha/*
