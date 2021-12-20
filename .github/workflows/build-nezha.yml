@@ -97,9 +97,9 @@ jobs:
         make -j2 toolchain/install
         make -j2 package/luci-app-nezha/compile V=99
         make -j2 package/openwrt-nezha/compile V=99
-        mv -f ../.github/.config_x86 .config
+        mv -f /workdir/.github/.config_x86 .config
         make -j2 package/openwrt-nezha/compile V=99
-        mv -f ../.github/.config_arm64 .config
+        mv -f /workdir/.github/.config_arm64 .config
         make -j2 package/openwrt-nezha/compile V=99
         echo "::set-output name=status::success"
 
