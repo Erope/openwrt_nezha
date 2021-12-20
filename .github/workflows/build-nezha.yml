@@ -24,7 +24,7 @@ env:
   REPO_URL: https://git.openwrt.org/openwrt/openwrt.git
   REPO_CHECKOUT: v17.01.6
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: ./.github/.config
+  CONFIG_FILE: ./.github/.config_x64
   UPLOAD_BIN_DIR: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
@@ -94,11 +94,14 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make -j4 toolchain/install
-        make -j4 package/luci-app-nezha/compile V=99
-        make -j4 package/openwrt-nezha/compile V=99
+        make -j2 toolchain/install
+        make -j2 package/luci-app-nezha/compile V=99
+        make -j2 package/openwrt-nezha/compile V=99
+        mv -f ../.github/.config_x86 .config
+        make -j2 package/openwrt-nezha/compile V=99
+        mv -f ../.github/.config_arm64 .config
+        make -j2 package/openwrt-nezha/compile V=99
         echo "::set-output name=status::success"
-        echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
 
     - name: Upload bin directory
       uses: actions/upload-artifact@main
@@ -123,4 +126,7 @@ jobs:
       with:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
-        files: openwrt/bin/packages/x86_64/nezha/*
+        files: |
+          openwrt/bin/packages/x86_64/nezha/*
+          openwrt/bin/packages/aarch64_armv8-a/nezha/*
+          openwrt/bin/packages/i386_i486/nezha/*
