@@ -94,9 +94,9 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make -j2 toolchain/install
-        make -j2 package/luci-app-nezha/compile V=99
-        make -j2 package/openwrt-nezha/compile V=99
+        make -j4 toolchain/install
+        make -j4 package/luci-app-nezha/compile V=99
+        make -j4 package/openwrt-nezha/compile V=99
         echo "::set-output name=status::success"
         echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
 
@@ -111,8 +111,7 @@ jobs:
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
-        version=$(curl -m 10 -sL "https://api.github.com/repos/naiba/nezha/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
-        echo "::set-output name=release_tag::$(version)"
+        echo "::set-output name=release_tag::$(curl -m 10 -sL "https://api.github.com/repos/naiba/nezha/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')"
         touch release.txt
         echo "::set-output name=status::success"
 
