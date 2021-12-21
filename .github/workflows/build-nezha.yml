@@ -61,12 +61,6 @@ jobs:
         make distclean
         echo 'src-git nezha https://github.com/Erope/openwrt_nezha' >> feeds.conf.default
 
-    - name: Cache
-      uses: klever1988/cachewrtbuild@main
-      with:
-        ccache: 'true'
-        prefix: ${{ github.workspace }}/openwrt
-
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
 
