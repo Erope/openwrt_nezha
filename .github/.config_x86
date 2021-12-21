@@ -2841,7 +2841,7 @@ CONFIG_PACKAGE_libuuid=y
 # CONFIG_PACKAGE_luci-app-mjpg-streamer is not set
 # CONFIG_PACKAGE_luci-app-mmc-over-gpio is not set
 # CONFIG_PACKAGE_luci-app-mwan3 is not set
-CONFIG_PACKAGE_luci-app-nezha-agent=m
+# CONFIG_PACKAGE_luci-app-nezha-agent is not set
 # CONFIG_PACKAGE_luci-app-nlbwmon is not set
 # CONFIG_PACKAGE_luci-app-noddos is not set
 # CONFIG_PACKAGE_luci-app-ntpc is not set

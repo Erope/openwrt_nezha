@@ -3442,7 +3442,7 @@ CONFIG_POSTFIX_CDB=y
 # CONFIG_PACKAGE_netcat is not set
 # CONFIG_PACKAGE_netdiscover is not set
 # CONFIG_PACKAGE_netperf is not set
-# CONFIG_PACKAGE_nezha-agent is not set
+CONFIG_PACKAGE_nezha-agent=m
 # CONFIG_PACKAGE_nlbwmon is not set
 # CONFIG_PACKAGE_noddos is not set
 # CONFIG_PACKAGE_noping is not set

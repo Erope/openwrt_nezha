@@ -125,4 +125,4 @@ jobs:
         files: |
           openwrt/bin/packages/x86_64/nezha/*
           openwrt/bin/packages/aarch64_armv8-a/nezha/*
-          openwrt/bin/packages/i386_i486/nezha/*
+          openwrt/bin/packages/i386_pentium4/nezha/*
