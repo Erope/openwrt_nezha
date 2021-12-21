@@ -24,7 +24,7 @@ env:
   REPO_URL: https://git.openwrt.org/openwrt/openwrt.git
   REPO_CHECKOUT: v17.01.6
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: ./.github/.config_x86
+  CONFIG_FILE: ./.github/.config_x64
   UPLOAD_BIN_DIR: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
@@ -91,7 +91,7 @@ jobs:
         make -j2 toolchain/install
         make -j2 package/luci-app-nezha/compile V=99
         make -j2 package/openwrt-nezha/compile V=99
-        mv -f $GITHUB_WORKSPACE/.github/.config_x64 .config
+        mv -f $GITHUB_WORKSPACE/.github/.config_x86 .config
         make -j2 package/openwrt-nezha/compile V=99
         mv -f $GITHUB_WORKSPACE/.github/.config_arm64 .config
         make -j2 package/openwrt-nezha/compile V=99
