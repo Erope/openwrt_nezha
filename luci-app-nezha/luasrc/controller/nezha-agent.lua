@@ -11,6 +11,9 @@ end
 function act_status()
 	local e={}
 	e.running=luci.sys.call("pgrep nezha-agent >/dev/null")==0
+	e.enabled=luci.sys.exec("uci get nezha-agent.config.enabled")
+	
+	luci.sys.call("/etc/init.d/nezha-agent enable")
 	-- e.port=luci.sys.exec("uci get nezha-agent.config.port")
 	luci.http.prepare_content("application/json")
 	luci.http.write_json(e)
