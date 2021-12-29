@@ -1,0 +1,56 @@
+#
+# Copyright (c) 2021-2022 zPonds <https://shinenet.cn>
+# Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
+#
+# This is free software, licensed under the MIT License.
+# See /LICENSE for more information.
+#
+# https://github.com/Erope/openwrt_nezha/
+# Description: Build Nezha using GitHub Actions
+#
+
+name: Update Checker
+
+env:
+  REPO_URL: https://github.com/naiba/nezha
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 10 20 * * *
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Get Version
+      id: getVer
+      run: |
+        echo "::set-output name=Version::$(curl -m 10 -sL "https://api.github.com/repos/naiba/nezha/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')"
+    
+    - name: Compare Version
+      id: cacheVer
+      uses: actions/cache@v2
+      with:
+        path: .savever
+        key: HEAD-${{ steps.getHash.outputs.Version }}
+
+    - name: Save New Version
+      if: steps.cacheHash.outputs.cache-hit != 'true'
+      run: |
+        echo ${{ steps.getHash.outputs.Version }} | tee .savever
+    
+    - name: Trigger build
+      if: steps.cacheHash.outputs.cache-hit != 'true'
+      uses: peter-evans/repository-dispatch@v1
+      with:
+        token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
+        event-type: Source Code Update
+
+    - name: Delete workflow runs
+      uses: GitRML/delete-workflow-runs@main
+      with:
+        retain_days: 1
+        keep_minimum_runs: 1
