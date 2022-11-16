@@ -35,15 +35,15 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .savever
-        key: HEAD-${{ steps.getHash.outputs.Version }}
+        key: HEAD-${{ steps.getVer.outputs.Version }}
 
     - name: Save New Version
-      if: steps.cacheHash.outputs.cache-hit != 'true'
+      if: steps.cacheVer.outputs.cache-hit != 'true'
       run: |
-        echo ${{ steps.getHash.outputs.Version }} | tee .savever
+        echo ${{ steps.getVer.outputs.Version }} | tee .savever
     
     - name: Trigger build
-      if: steps.cacheHash.outputs.cache-hit != 'true'
+      if: steps.cacheVer.outputs.cache-hit != 'true'
       uses: peter-evans/repository-dispatch@v1
       with:
         token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
