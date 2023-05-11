@@ -12,7 +12,7 @@
 name: Update Checker
 
 env:
-  REPO_URL: https://github.com/naiba/nezha
+  REPO_URL: https://github.com/nezhahq/agent
 
 on:
   workflow_dispatch:
@@ -28,7 +28,7 @@ jobs:
     - name: Get Version
       id: getVer
       run: |
-        echo "::set-output name=Version::$(curl -m 10 -sL "https://api.github.com/repos/naiba/nezha/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')"
+        echo "::set-output name=Version::$(curl -m 10 -sL "https://api.github.com/repos/nezhahq/agent/releases/latest" | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')"
     
     - name: Compare Version
       id: cacheVer
